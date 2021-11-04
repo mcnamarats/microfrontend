@@ -1,16 +1,16 @@
-name: deploy-container
+name: deploy-marketing
 
 on:
   push:
     branches:
       - master
     paths:
-      - 'container/**'
+      - 'marketing/**'
   workflow_dispatch:
 
 defaults:
   run:
-    working-directory: container
+    working-directory: marketing
 
 jobs:
   build:
@@ -25,8 +25,6 @@ jobs:
         run: npm install
 
       - name: Build
-        env: 
-          PRODUCTION_DOMAIN: ${{ PRODUCTION_DOMAIN }}
         run: npm run build
 
       - name: Configure AWS Credentials
@@ -37,5 +35,5 @@ jobs:
           aws-region: eu-west-1
 
       - name: Copy to S3
-        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/marketing/latest
 
